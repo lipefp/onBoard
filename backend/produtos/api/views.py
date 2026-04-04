@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from .models import Equipamento
+from ..models import Equipamento
 from .serializers import EquipamentoSerializer
 
 class EquipamentoViewSet(viewsets.ModelViewSet):

@@ -19,5 +19,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('produtos.urls')), # cria a ponte para o front-end
+    path('api/', include('produtos.api.urls')), # cria a ponte para o front-end
 ]
