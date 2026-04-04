@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'produtos',
-    'rest_framekwork',
+    'rest_framework',
     'corsheaders',
+    'produtos',
     
 ]
 
@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'estoque_leste',
+        'USER': 'root',
+        'PASSWORD': 'i4DJ38AlxNwxHE',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
@@ -121,4 +125,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
-CORS_ALLOW_ALL_ORIGINS = True # 
+CORS_ALLOW_ALL_ORIGINS = True 
