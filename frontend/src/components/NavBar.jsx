@@ -29,7 +29,7 @@ const Navbar = () => {
       color: '#fff'
     }}>
       <span style={{ fontWeight: 'bold', fontSize: '18px' }}>
-        📦 Inventário Leste
+        📦 Inventário 
       </span>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         <span style={{ fontSize: '14px' }}>Olá, {username}</span>
