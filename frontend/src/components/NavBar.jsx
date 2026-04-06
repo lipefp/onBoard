@@ -1,20 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import { getUsername, getRefreshToken, clearAuthData } from '../utils/auth';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const username = localStorage.getItem('username');
+  const username = getUsername();
 
   const handleLogout = async () => {
     try {
-      const refresh = localStorage.getItem('refresh');
+      const refresh = getRefreshToken();
       await api.post('auth/logout/', { refresh });
     } catch (e) {
       console.error('Erro ao fazer logout:', e);
     } finally {
-      localStorage.removeItem('access');
-      localStorage.removeItem('refresh');
-      localStorage.removeItem('username');
+      // Sempre limpa os dados locais, mesmo se o backend falhar
+      clearAuthData();
       navigate('/login');
     }
   };

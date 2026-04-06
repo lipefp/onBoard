@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api';
+import { saveAuthData } from '../utils/auth';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,9 +19,8 @@ const Login = () => {
     setErro('');
     try {
       const res = await api.post('auth/login/', form);
-      localStorage.setItem('access', res.data.access);
-      localStorage.setItem('refresh', res.data.refresh);
-      localStorage.setItem('username', res.data.username);
+      // Salva tokens JWT e username para uso nas próximas requisições
+      saveAuthData(res.data.access, res.data.refresh, res.data.username);
       navigate('/equipamentos');
     } catch (err) {
       setErro('Usuário ou senha inválidos.');
@@ -40,7 +40,7 @@ const Login = () => {
         boxShadow: '0 4px 12px rgba(0,0,0,0.1)', width: '100%', maxWidth: '380px'
       }}>
         <h2 style={{ textAlign: 'center', marginBottom: '24px', color: '#0056b3' }}>
-          📦 Inventário Leste
+          📦 Inventário
         </h2>
 
         {erro && (
