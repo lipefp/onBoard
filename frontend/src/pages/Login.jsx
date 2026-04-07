@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Package } from 'lucide-react';
 import api from '../api';
 import { saveAuthData } from '../utils/auth';
+import Switch3D from '../components/Switch3D';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,7 +21,6 @@ const Login = () => {
     setErro('');
     try {
       const res = await api.post('auth/login/', form);
-      // Salva tokens JWT e username para uso nas próximas requisições
       saveAuthData(res.data.access, res.data.refresh, res.data.username);
       navigate('/equipamentos');
     } catch (err) {
@@ -31,20 +31,50 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
+    <div className="min-h-screen flex">
 
-        <div className="flex flex-col items-center mb-8">
-          <div className="bg-slate-800 p-3 rounded-xl mb-3">
-            <Package size={28} className="text-blue-400" />
+      {/* Painel esquerdo */}
+      <div className="hidden lg:flex w-1/2 bg-slate-900 flex-col justify-between p-12 min-h-screen">
+        <div className="flex items-center gap-3">
+          <div className="bg-blue-600 p-2 rounded-lg">
+            <Package size={22} className="text-white" />
           </div>
-          <h1 className="text-xl font-semibold text-slate-800">Inventário de Rede</h1>
-          <p className="text-sm text-slate-500 mt-1">Faça login para continuar</p>
+          <span className="text-white font-semibold text-lg">Inventário de Rede</span>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+        <div>
+          <div className="flex-1 flex flex-col items-center justify-center gap-10">
+            <Switch3D />
+            <div className="text-center">
+              <h2 className="text-white text-2xl font-semibold mb-2">
+                Controle total do seu inventário
+              </h2>
+              <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
+                Gerencie switches, roteadores, access points e transceivers em um único lugar.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <p className="text-slate-600 text-xs">© 2026 Inventário de Rede</p>
+      </div>
+
+      {/* Painel direito */}
+      <div className="flex-1 bg-slate-50 flex items-center justify-center px-8">
+        <div className="w-full max-w-sm">
+
+          <div className="lg:hidden flex items-center gap-2 mb-8">
+            <div className="bg-blue-600 p-2 rounded-lg">
+              <Package size={18} className="text-white" />
+            </div>
+            <span className="font-semibold text-slate-800">Inventário de Rede</span>
+          </div>
+
+          <h1 className="text-2xl font-bold text-slate-800 mb-1">Bem-vindo</h1>
+          <p className="text-sm text-slate-500 mb-8">Entre com suas credenciais para continuar</p>
+
           {erro && (
-            <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5">
+            <div className="mb-5 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5">
               {erro}
             </div>
           )}
@@ -57,7 +87,7 @@ const Login = () => {
                 value={form.username}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
@@ -69,7 +99,7 @@ const Login = () => {
                 value={form.password}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
@@ -81,14 +111,14 @@ const Login = () => {
               {loading ? 'Entrando...' : 'Entrar'}
             </button>
           </form>
-        </div>
 
-        <p className="text-center text-sm text-slate-500 mt-5">
-          Não tem conta?{' '}
-          <Link to="/register" className="text-blue-600 hover:underline font-medium">
-            Cadastre-se
-          </Link>
-        </p>
+          <p className="text-center text-sm text-slate-500 mt-6">
+            Não tem conta?{' '}
+            <Link to="/register" className="text-blue-600 hover:underline font-medium">
+              Cadastre-se
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

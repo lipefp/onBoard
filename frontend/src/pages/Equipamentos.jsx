@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Pencil, Trash2, X, Wifi, MapPin, Tag, Hash, Layers, Zap } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Wifi, MapPin, Tag, Hash, Layers, Zap, Package, BoxIcon, Activity } from 'lucide-react';
 import api from '../api';
 import Navbar from '../components/Navbar';
 
@@ -26,7 +26,6 @@ const Modal = ({ item, onClose }) => {
         className="bg-white rounded-xl shadow-xl w-full max-w-lg"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
         <div className="flex items-start justify-between p-6 border-b border-slate-100">
           <div>
             <h3 className="text-base font-semibold text-slate-800">{item.nome}</h3>
@@ -38,15 +37,11 @@ const Modal = ({ item, onClose }) => {
               {item.estado}
             </span>
           </div>
-          <button
-            onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
-          >
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer">
             <X size={18} />
           </button>
         </div>
 
-        {/* Conteúdo */}
         <div className="p-6 grid grid-cols-2 gap-5">
           <Campo icone={Tag} label="Categoria" valor={item.categoria} />
           <Campo icone={Hash} label="Nº de Série" valor={item.serial_number} />
@@ -106,6 +101,16 @@ const Equipamentos = () => {
     carregarEquipamentos();
   }, []);
 
+  const total = equipamentos.length;
+  const emEstoque = equipamentos.filter((e) => e.estado === 'ESTOQUE').length;
+  const emUso = equipamentos.filter((e) => e.estado === 'USO').length;
+
+  const cards = [
+    { label: 'Total', value: total, icone: Package, cor: 'text-slate-700', bg: 'bg-slate-100' },
+    { label: 'Em Estoque', value: emEstoque, icone: BoxIcon, cor: 'text-emerald-700', bg: 'bg-emerald-50' },
+    { label: 'Em Uso', value: emUso, icone: Activity, cor: 'text-amber-700', bg: 'bg-amber-50' },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-100">
       <Navbar />
@@ -113,6 +118,8 @@ const Equipamentos = () => {
       <Modal item={selecionado} onClose={() => setSelecionado(null)} />
 
       <div className="max-w-6xl mx-auto px-6 py-8">
+
+        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-semibold text-slate-800">Equipamentos</h2>
@@ -125,6 +132,21 @@ const Equipamentos = () => {
             <Plus size={16} />
             Novo Equipamento
           </button>
+        </div>
+
+        {/* Cards de resumo */}
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          {cards.map(({ label, value, icone: Icone, cor, bg }) => (
+            <div key={label} className="bg-white rounded-xl border border-slate-200 px-5 py-4 flex items-center gap-4">
+              <div className={`${bg} p-2.5 rounded-lg`}>
+                <Icone size={18} className={cor} />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-slate-800">{value}</p>
+                <p className="text-xs text-slate-500">{label}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
         {erro && (
