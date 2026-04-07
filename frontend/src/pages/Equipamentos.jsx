@@ -1,14 +1,84 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Wifi, MapPin, Tag, Hash, Layers, Zap } from 'lucide-react';
 import api from '../api';
 import Navbar from '../components/Navbar';
+
+const Modal = ({ item, onClose }) => {
+  if (!item) return null;
+
+  const Campo = ({ icone: Icone, label, valor }) => (
+    <div className="flex items-start gap-3">
+      <div className="mt-0.5 text-slate-400"><Icone size={15} /></div>
+      <div>
+        <p className="text-xs text-slate-400">{label}</p>
+        <p className="text-sm text-slate-700 font-medium">{valor || '—'}</p>
+      </div>
+    </div>
+  );
+
+  return (
+    <div
+      className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-xl shadow-xl w-full max-w-lg"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-start justify-between p-6 border-b border-slate-100">
+          <div>
+            <h3 className="text-base font-semibold text-slate-800">{item.nome}</h3>
+            <span className={`inline-flex items-center mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${
+              item.estado === 'ESTOQUE'
+                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                : 'bg-amber-50 text-amber-700 border border-amber-200'
+            }`}>
+              {item.estado}
+            </span>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Conteúdo */}
+        <div className="p-6 grid grid-cols-2 gap-5">
+          <Campo icone={Tag} label="Categoria" valor={item.categoria} />
+          <Campo icone={Hash} label="Nº de Série" valor={item.serial_number} />
+          <Campo icone={MapPin} label="Local" valor={item.local} />
+          <Campo icone={Layers} label="Gerenciamento" valor={item.gerenciamento} />
+          <Campo icone={Wifi} label="Velocidade Uplink" valor={item.velocidade_uplink} />
+          <Campo icone={Zap} label="PoE" valor={item.suporta_poe ? `Sim — ${item.potencia_poe}W` : 'Não'} />
+          <Campo icone={Hash} label="Portas" valor={item.quantidade_portas} />
+          <Campo icone={Hash} label="Quantidade" valor={item.quantidade} />
+        </div>
+
+        {item.observacoes && (
+          <div className="px-6 pb-4">
+            <p className="text-xs text-slate-400 mb-1">Observações</p>
+            <p className="text-sm text-slate-600 bg-slate-50 rounded-lg px-3 py-2">{item.observacoes}</p>
+          </div>
+        )}
+
+        <div className="px-6 pb-6 pt-2 text-xs text-slate-400">
+          Cadastrado em {new Date(item.data_cadastro).toLocaleDateString('pt-BR')}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Equipamentos = () => {
   const navigate = useNavigate();
   const [equipamentos, setEquipamentos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState('');
+  const [selecionado, setSelecionado] = useState(null);
 
   const carregarEquipamentos = async () => {
     try {
@@ -38,6 +108,8 @@ const Equipamentos = () => {
   return (
     <div className="min-h-screen bg-slate-100">
       <Navbar />
+
+      <Modal item={selecionado} onClose={() => setSelecionado(null)} />
 
       <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-6">
@@ -77,7 +149,8 @@ const Equipamentos = () => {
                   equipamentos.map((item, i) => (
                     <tr
                       key={item.id}
-                      className={`border-t border-slate-100 hover:bg-slate-50 transition-colors ${i % 2 === 0 ? '' : 'bg-slate-50/50'}`}
+                      onClick={() => setSelecionado(item)}
+                      className={`border-t border-slate-100 hover:bg-blue-50 transition-colors cursor-pointer ${i % 2 === 0 ? '' : 'bg-slate-50/50'}`}
                     >
                       <td className="px-5 py-3.5 font-medium text-slate-800">{item.nome}</td>
                       <td className="px-5 py-3.5 text-slate-500">{item.categoria}</td>
@@ -92,7 +165,7 @@ const Equipamentos = () => {
                           {item.estado}
                         </span>
                       </td>
-                      <td className="px-5 py-3.5">
+                      <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => navigate(`/equipamentos/editar/${item.id}`)}
