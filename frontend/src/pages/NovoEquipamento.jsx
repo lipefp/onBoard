@@ -27,6 +27,8 @@ const initialForm = {
   local: 'Sede Piratininga', observacoes: '',
 };
 
+const inputClass = "w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white";
+
 const NovoEquipamento = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -65,79 +67,90 @@ const NovoEquipamento = () => {
     }
   };
 
-  const inputStyle = {
-    width: '100%', padding: '10px', borderRadius: '6px',
-    border: '1px solid #ccc', fontSize: '14px', boxSizing: 'border-box'
-  };
-
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f0f4f8' }}>
+    <div className="min-h-screen bg-slate-100">
       <Navbar />
-      <div style={{ padding: '32px', maxWidth: '700px', margin: '0 auto' }}>
-        <h2 style={{ color: '#333', marginBottom: '24px' }}>
-          {isEdicao ? 'Editar Equipamento' : 'Novo Equipamento'}
-        </h2>
 
-        {erro && <p style={{ color: 'red', marginBottom: '16px' }}>{erro}</p>}
+      <div className="max-w-2xl mx-auto px-6 py-8">
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-slate-800">
+            {isEdicao ? 'Editar Equipamento' : 'Novo Equipamento'}
+          </h2>
+          <p className="text-sm text-slate-500 mt-0.5">
+            {isEdicao ? 'Atualize os dados do equipamento' : 'Preencha os dados para cadastrar'}
+          </p>
+        </div>
 
-        <div style={{
-          background: '#fff', padding: '32px', borderRadius: '10px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-        }}>
-          <form onSubmit={handleSubmit}>
+        {erro && (
+          <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5">
+            {erro}
+          </div>
+        )}
+
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+          <form onSubmit={handleSubmit} className="space-y-5">
+
             {CAMPOS.map(({ name, label, type }) => (
-              <div key={name} style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '6px', color: '#333', fontWeight: '500' }}>
-                  {label}
-                </label>
+              <div key={name}>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">{label}</label>
                 {type === 'textarea' ? (
                   <textarea
-                    name={name} value={form[name]} onChange={handleChange}
-                    rows={3} style={{ ...inputStyle, resize: 'vertical' }}
+                    name={name}
+                    value={form[name]}
+                    onChange={handleChange}
+                    rows={3}
+                    className={`${inputClass} resize-none`}
                   />
                 ) : (
                   <input
-                    name={name} type={type} value={form[name]}
-                    onChange={handleChange} style={inputStyle}
+                    name={name}
+                    type={type}
+                    value={form[name]}
+                    onChange={handleChange}
+                    className={inputClass}
                   />
                 )}
               </div>
             ))}
 
-            {SELECTS.map(({ name, label, options }) => (
-              <div key={name} style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '6px', color: '#333', fontWeight: '500' }}>
-                  {label}
-                </label>
-                <select name={name} value={form[name]} onChange={handleChange} style={inputStyle}>
-                  {options.map((o) => <option key={o} value={o}>{o}</option>)}
-                </select>
-              </div>
-            ))}
+            <div className="grid grid-cols-2 gap-4">
+              {SELECTS.map(({ name, label, options }) => (
+                <div key={name}>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">{label}</label>
+                  <select name={name} value={form[name]} onChange={handleChange} className={inputClass}>
+                    {options.map((o) => <option key={o} value={o}>{o}</option>)}
+                  </select>
+                </div>
+              ))}
+            </div>
 
-            <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div className="flex items-center gap-2.5 py-1">
               <input
-                type="checkbox" name="suporta_poe" id="suporta_poe"
-                checked={form.suporta_poe} onChange={handleChange}
+                type="checkbox"
+                name="suporta_poe"
+                id="suporta_poe"
+                checked={form.suporta_poe}
+                onChange={handleChange}
+                className="w-4 h-4 accent-blue-600"
               />
-              <label htmlFor="suporta_poe" style={{ color: '#333', fontWeight: '500' }}>
+              <label htmlFor="suporta_poe" className="text-sm font-medium text-slate-700 cursor-pointer">
                 Suporta PoE?
               </label>
             </div>
 
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <button type="submit" disabled={loading} style={{
-                flex: 1, padding: '12px', backgroundColor: '#0056b3',
-                color: '#fff', border: 'none', borderRadius: '6px',
-                fontSize: '15px', cursor: 'pointer', fontWeight: 'bold'
-              }}>
+            <div className="flex gap-3 pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer"
+              >
                 {loading ? 'Salvando...' : isEdicao ? 'Atualizar' : 'Cadastrar'}
               </button>
-              <button type="button" onClick={() => navigate('/equipamentos')} style={{
-                flex: 1, padding: '12px', backgroundColor: 'transparent',
-                color: '#666', border: '1px solid #ccc', borderRadius: '6px',
-                fontSize: '15px', cursor: 'pointer'
-              }}>
+              <button
+                type="button"
+                onClick={() => navigate('/equipamentos')}
+                className="flex-1 py-2.5 border border-slate-300 hover:border-slate-400 text-slate-600 hover:text-slate-800 text-sm font-medium rounded-lg transition-colors cursor-pointer"
+              >
                 Cancelar
               </button>
             </div>

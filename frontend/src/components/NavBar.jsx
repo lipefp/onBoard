@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { LogOut, Package } from 'lucide-react';
 import api from '../api';
 import { getUsername, getRefreshToken, clearAuthData } from '../utils/auth';
 
@@ -20,27 +21,18 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{
-      backgroundColor: '#0056b3',
-      padding: '12px 24px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      color: '#fff'
-    }}>
-      <span style={{ fontWeight: 'bold', fontSize: '18px' }}>
-        📦 Inventário 
-      </span>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <span style={{ fontSize: '14px' }}>Olá, {username}</span>
-        <button onClick={handleLogout} style={{
-          background: 'transparent',
-          border: '1px solid #fff',
-          color: '#fff',
-          padding: '6px 14px',
-          borderRadius: '6px',
-          cursor: 'pointer'
-        }}>
+    <nav className="bg-slate-800 text-white px-6 py-3 flex items-center justify-between shadow-md">
+      <div className="flex items-center gap-2">
+        <Package size={20} className="text-blue-400" />
+        <span className="font-semibold text-base tracking-wide">Inventário de Rede</span>
+      </div>
+      <div className="flex items-center gap-4">
+        <span className="text-sm text-slate-300">Olá, <span className="text-white font-medium">{username}</span></span>
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 text-sm border border-slate-500 hover:border-slate-300 hover:text-slate-100 text-slate-300 px-3 py-1.5 rounded transition-colors cursor-pointer"
+        >
+          <LogOut size={14} />
           Sair
         </button>
       </div>

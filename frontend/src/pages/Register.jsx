@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Package } from 'lucide-react';
 import api from '../api';
 
 const Register = () => {
@@ -26,55 +27,61 @@ const Register = () => {
     }
   };
 
+  const campos = [
+    { name: 'username', label: 'Usuário', type: 'text' },
+    { name: 'email', label: 'E-mail', type: 'email' },
+    { name: 'password', label: 'Senha', type: 'password' },
+  ];
+
   return (
-    <div style={{
-      minHeight: '100vh', display: 'flex',
-      alignItems: 'center', justifyContent: 'center',
-      backgroundColor: '#f0f4f8'
-    }}>
-      <div style={{
-        background: '#fff', padding: '40px', borderRadius: '10px',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.1)', width: '100%', maxWidth: '380px'
-      }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '24px', color: '#0056b3' }}>
-          Criar Conta
-        </h2>
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
+      <div className="w-full max-w-sm">
 
-        {erro && (
-          <p style={{ color: 'red', textAlign: 'center', marginBottom: '12px' }}>{erro}</p>
-        )}
+        <div className="flex flex-col items-center mb-8">
+          <div className="bg-slate-800 p-3 rounded-xl mb-3">
+            <Package size={28} className="text-blue-400" />
+          </div>
+          <h1 className="text-xl font-semibold text-slate-800">Criar conta</h1>
+          <p className="text-sm text-slate-500 mt-1">Preencha os dados para se cadastrar</p>
+        </div>
 
-        <form onSubmit={handleSubmit}>
-          {['username', 'email', 'password'].map((field) => (
-            <div key={field} style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '6px', color: '#333', textTransform: 'capitalize' }}>
-                {field === 'username' ? 'Usuário' : field === 'email' ? 'E-mail' : 'Senha'}
-              </label>
-              <input
-                name={field}
-                type={field === 'password' ? 'password' : field === 'email' ? 'email' : 'text'}
-                value={form[field]}
-                onChange={handleChange}
-                required
-                style={{
-                  width: '100%', padding: '10px', borderRadius: '6px',
-                  border: '1px solid #ccc', fontSize: '14px', boxSizing: 'border-box'
-                }}
-              />
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+          {erro && (
+            <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5">
+              {erro}
             </div>
-          ))}
+          )}
 
-          <button type="submit" disabled={loading} style={{
-            width: '100%', padding: '12px', backgroundColor: '#0056b3',
-            color: '#fff', border: 'none', borderRadius: '6px',
-            fontSize: '15px', cursor: 'pointer', fontWeight: 'bold', marginTop: '8px'
-          }}>
-            {loading ? 'Cadastrando...' : 'Cadastrar'}
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {campos.map(({ name, label, type }) => (
+              <div key={name}>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">{label}</label>
+                <input
+                  name={name}
+                  type={type}
+                  value={form[name]}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            ))}
 
-        <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '13px', color: '#666' }}>
-          Já tem conta? <Link to="/login" style={{ color: '#0056b3' }}>Entrar</Link>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer"
+            >
+              {loading ? 'Cadastrando...' : 'Cadastrar'}
+            </button>
+          </form>
+        </div>
+
+        <p className="text-center text-sm text-slate-500 mt-5">
+          Já tem conta?{' '}
+          <Link to="/login" className="text-blue-600 hover:underline font-medium">
+            Entrar
+          </Link>
         </p>
       </div>
     </div>
