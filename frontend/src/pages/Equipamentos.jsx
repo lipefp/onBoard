@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Pencil, Trash2, X, Wifi, MapPin, Tag, Hash, Layers, Zap, Package, BoxIcon, Activity } from 'lucide-react';
 import api from '../api';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/NavBar';
 
 const Modal = ({ item, onClose }) => {
   if (!item) return null;

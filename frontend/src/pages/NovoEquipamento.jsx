@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../api';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/NavBar';
 
 const initialForm = {
   nome: '', categoria: 'SWITCH', quantidade: 1, gerenciamento: 'L2',
