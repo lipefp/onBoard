@@ -65,8 +65,9 @@ const Modal = ({ item, onClose }) => {
           </div>
         )}
 
-        <div className="px-6 pb-6 pt-2 text-xs text-slate-400">
-          Cadastrado em {new Date(item.data_cadastro).toLocaleDateString('pt-BR')}
+        <div className="px-6 pb-6 pt-2 flex items-center justify-between text-xs text-slate-400">
+          <span>Cadastrado por <span className="font-medium text-slate-500">{item.cadastrado_por || '—'}</span></span>
+          <span>{new Date(item.data_cadastro).toLocaleDateString('pt-BR')}</span>
         </div>
       </div>
     </div>

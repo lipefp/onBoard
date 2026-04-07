@@ -50,6 +50,9 @@ class Equipamento(models.Model):
     local = models.CharField(max_length=100, default="Sede Piratininga")
     observacoes = models.TextField(blank=True, null=True)
     data_cadastro = models.DateTimeField(auto_now_add=True)
+    cadastrado_por = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True, related_name='equipamentos'
+    )
 
     def __str__(self):
         return f"{self.nome} - {self.velocidade_uplink} ({self.serial_number})"

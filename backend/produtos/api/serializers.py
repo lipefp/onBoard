@@ -4,6 +4,8 @@ from ..models import Equipamento, LoginLog
 
 
 class EquipamentoSerializer(serializers.ModelSerializer):
+    cadastrado_por = serializers.StringRelatedField(read_only=True)
+
     class Meta:
         model = Equipamento
         fields = '__all__'

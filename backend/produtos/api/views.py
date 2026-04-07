@@ -22,6 +22,9 @@ class EquipamentoViewSet(viewsets.ModelViewSet):
     serializer_class = EquipamentoSerializer
     permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        serializer.save(cadastrado_por=self.request.user)
+
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
