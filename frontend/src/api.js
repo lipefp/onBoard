@@ -6,10 +6,12 @@ const api = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/',
 });
 
-// Interceptor: injeta o token JWT automaticamente em todas as requisições
+// Interceptor: injeta o token JWT automaticamente em todas as requisições,
+// exceto nas rotas de autenticação que não precisam de token.
 api.interceptors.request.use((config) => {
+  const isAuthRoute = config.url?.includes('auth/login') || config.url?.includes('auth/register');
   const token = getAccessToken();
-  if (token) {
+  if (token && !isAuthRoute) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
