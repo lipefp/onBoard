@@ -56,7 +56,7 @@ const NovoEquipamento = () => {
       } else {
         await api.post('equipamentos/', form);
       }
-      navigate('/equipamentos');
+      navigate('/equipamentos', { state: { toast: isEdicao ? 'Equipamento atualizado com sucesso.' : 'Equipamento cadastrado com sucesso.' } });
     } catch (err) {
       setErro('Erro ao salvar equipamento. Verifique os dados.');
     } finally {
@@ -96,7 +96,7 @@ const NovoEquipamento = () => {
                   </Campo>
                 </div>
                 <Campo label="Número de Série">
-                  <input name="serial_number" type="text" value={form.serial_number} onChange={handleChange} required className={inputClass} />
+                  <input name="serial_number" type="text" value={form.serial_number} onChange={handleChange} className={inputClass} />
                 </Campo>
                 <Campo label="Local">
                   <input name="local" type="text" value={form.local} onChange={handleChange} className={inputClass} />
