@@ -227,7 +227,7 @@ const Switch3D = () => {
             width: W, height: D,
             background: 'linear-gradient(180deg, #1a3050 0%, #0f1e2e 100%)',
             border: '1px solid #253a50',
-            transform: `rotateX(-90deg) translateZ(${D / 2}px)`,
+            transform: `rotateX(90deg) translateZ(${D / 2}px)`,
             overflow: 'hidden',
           }}>
             {Array.from({ length: 9 }).map((_, i) => (
@@ -243,7 +243,7 @@ const Switch3D = () => {
             width: W, height: D,
             background: '#080e16',
             border: '1px solid #12202e',
-            transform: `rotateX(90deg) translateZ(${H - D / 2}px)`,
+            transform: `rotateX(-90deg) translateZ(${H - D / 2}px)`,
           }} />
         </div>
       </div>
