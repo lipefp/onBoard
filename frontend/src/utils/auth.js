@@ -9,10 +9,11 @@
  * @param {string} refresh - Token de refresh JWT (longa duração)
  * @param {string} username - Nome do usuário autenticado
  */
-export const saveAuthData = (access, refresh, username) => {
+export const saveAuthData = (access, refresh, username, isStaff = false) => {
   localStorage.setItem('access', access);
   localStorage.setItem('refresh', refresh);
   localStorage.setItem('username', username);
+  localStorage.setItem('is_staff', isStaff ? 'true' : 'false');
 };
 
 /**
@@ -48,3 +49,5 @@ export const getUsername = () => localStorage.getItem('username');
  * @returns {boolean}
  */
 export const isAuthenticated = () => Boolean(getAccessToken());
+
+export const isStaff = () => localStorage.getItem('is_staff') === 'true';

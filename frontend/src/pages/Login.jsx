@@ -22,10 +22,14 @@ const Login = () => {
     setErro('');
     try {
       const res = await api.post('auth/login/', form);
-      saveAuthData(res.data.access, res.data.refresh, res.data.username);
+      saveAuthData(res.data.access, res.data.refresh, res.data.username, res.data.is_staff);
       navigate('/equipamentos');
     } catch (err) {
-      setErro('Usuário ou senha inválidos.');
+      if (err.response?.status === 429) {
+        setErro('Muitas tentativas. Aguarde 5 minutos e tente novamente.');
+      } else {
+        setErro('Usuário ou senha inválidos.');
+      }
     } finally {
       setLoading(false);
     }
