@@ -39,7 +39,7 @@ class Equipamento(models.Model):
 
     # Características Físicas
     quantidade_portas = models.PositiveIntegerField(default=24)
-    serial_number = models.CharField(max_length=100, unique=True, verbose_name="Número de Série")
+    serial_number = models.CharField(max_length=100, unique=True, blank=True, null=True, verbose_name="Número de Série")
 
     # Status e Localização
     estado = models.CharField(
@@ -50,6 +50,7 @@ class Equipamento(models.Model):
     local = models.CharField(max_length=100, default="Sede Piratininga")
     observacoes = models.TextField(blank=True, null=True)
     data_cadastro = models.DateTimeField(auto_now_add=True)
+    data_atualizacao = models.DateTimeField(auto_now=True)
     cadastrado_por = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True, related_name='equipamentos'
     )
